@@ -8,11 +8,10 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './views/Auth/Login';
-import Register from './views/Auth/Register';
 import NotFound from './views/NotFound';
-import Dashboard from './views/Dashboard';
-// Register
+import Olagiftbox from './views/Olagiftbox';
+import Portofolio from './views/Portofolio';
+import DesainUndangan from './views/DesainUndangan';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -24,9 +23,9 @@ root.render(
         <Routes>
           <Route path='/'>
             <Route index path='/' element={<App />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/dashboard' element={<Dashboard />} />
+            <Route index path='/Portofolio' element={<Portofolio />} />
+            <Route index path='/DesainUndangan' element={<DesainUndangan />} />
+            <Route index path='/Olagiftbox' element={<Olagiftbox />} />
             <Route path='*' element={<NotFound />} />
           </Route>
         </Routes>

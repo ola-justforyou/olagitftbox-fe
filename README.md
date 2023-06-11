@@ -1,6 +1,6 @@
-# CMS Justforyou.id
+# Justforyou.id
 
-Content Management System Justforyou is dashboard for manage the content,member and stuff
+Justforyou is digital invitation
 
 ## Demo
 
@@ -15,13 +15,13 @@ Content Management System Justforyou is dashboard for manage the content,member 
 Clone the project
 
 ```bash
-git clone https://github.com/x
+git clone https://github.com/ola-justforyou/justforyou-fe.git
 ```
 
 Go to the project directory
 
 ```bash
-cd movieapp
+cd justforyou-fe
 ```
 
 Install dependencies
