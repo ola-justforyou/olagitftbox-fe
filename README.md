@@ -1,6 +1,6 @@
-# Justforyou.id
+# Olagiftbox
 
-Justforyou is digital invitation
+Olagiftbox
 
 ## Demo
 
@@ -15,13 +15,13 @@ Justforyou is digital invitation
 Clone the project
 
 ```bash
-git clone https://github.com/ola-justforyou/justforyou-fe.git
+git clone https://github.com/ola-justforyou/olagitftbox-fe.git
 ```
 
 Go to the project directory
 
 ```bash
-cd justforyou-fe
+cd olagiftbox-fe
 ```
 
 Install dependencies
