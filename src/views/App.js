@@ -1,5 +1,4 @@
 import '../App.css';
-// import { useEffect } from 'react';
 import { React, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getWaybill } from '../actions';
@@ -11,6 +10,8 @@ import {
   getAllProductsByCategory,
 } from '../actions/productAction';
 import SwiperEffect from '../components/SwiperEffect';
+import { Search } from 'lucide-react';
+import CardProduct from '../components/CardProduct';
 function App(props) {
   const {
     state,
@@ -24,6 +25,7 @@ function App(props) {
     getAllProductsCategories,
     getAllProductsByCategory,
   } = props;
+  const [query, setQuery] = useState('');
   const getDataWaybill = async () => {
     await getWaybill();
   };
@@ -47,8 +49,8 @@ function App(props) {
     // getDataProducts();
     // getDataProduct(1);
     // getSearchDataProducts('samsung');
-    getDataProductsCategories();
-    getDataProductsByCategory('smartphones');
+    // getDataProductsCategories();
+    // getDataProductsByCategory('smartphones');
   }, []);
   const newArray = Array.from({ length: 12 }, () => ({
     title: 'Judul Film Acak',
@@ -58,11 +60,39 @@ function App(props) {
   console.log(categories, 'categories');
   console.log(products, 'products');
   return (
-    <div className='w-screen h-screen flex'>
-      <div className='mx-auto container gap-y-6 flex flex-col'>
-        <h1>hello world</h1>
+    <div className='w-screen min-h-screen flex pb-48'>
+      <div className='mx-auto container md:px-6 gap-y-6 flex flex-col'>
+        <div className='mt-12 px-3 md:px-0 sm:px-0'>
+          <div class='relative '>
+            <div class='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+              <svg
+                class='w-4 h-4 text-gray-500 '
+                aria-hidden='true'
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 20 20'
+              >
+                <path
+                  stroke='currentColor'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  stroke-width='2'
+                  d='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z'
+                />
+              </svg>
+              <span class='sr-only'>Search icon</span>
+            </div>
+            <input
+              type='text'
+              id='search-navbar'
+              class='block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 '
+              placeholder='Search...'
+              onChange={(e) => getSearchDataProducts(e.target.value)}
+            />
+          </div>
+        </div>
         <SwiperEffect />
-        <div className='text-white text-3xl  ml-7 sm:ml-0'>
+        <div className='text-white text-3xl ml-4  md:ml-0 sm:ml-0'>
           <h2 className='text-lg font-medium text-black mb-2'>Category</h2>
           <div className='flex flex-col h-full h w-full overflow-auto no-scrollbar overflow-y-hidden '>
             <div className='flex min-w-min h-full text-black sm:gap-x-20  gap-x-6 justify-between pr-8'>
@@ -85,6 +115,14 @@ function App(props) {
             </div>
           </div>
         </div>
+        <div className='text-white text-3xl ml-4  md:ml-0 sm:ml-0'>
+          <h2 className='text-lg font-medium text-black mb-2'>Popular</h2>
+          <div className='grid grid-cols-2 sm:grid-cols-4  gap-x-3 gap-y-6 justify-between'>
+            {products?.map((product, index) => (
+              <CardProduct data={product} key={index} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -92,7 +130,7 @@ function App(props) {
 
 const mapStateToProps = (state) => ({
   state: state.waybill.data,
-  products: state.products.datas,
+  products: state.products.datas.products,
   product: state.products.data,
   categories: state.products.categories,
 });
