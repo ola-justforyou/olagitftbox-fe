@@ -5,9 +5,9 @@ const CardProduct = (props) => {
   return (
     <div>
       <div className='w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow '>
-        <a className='w-32 object-contain'>
+        <a className='h-32 object-contain'>
           <img
-            className='px-3 rounded-t-lg object-cover w-full '
+            className='p-3 rounded-t-lg object-cover h-48 w-full '
             src={props?.data?.thumbnail}
             alt='product image'
           />
@@ -69,7 +69,9 @@ const CardProduct = (props) => {
             </span>
           </div>
           <div className='flex items-center justify-between'>
-            <span className='text-3xl font-bold text-gray-900 '>$599</span>
+            <span className='text-3xl font-bold text-gray-900 '>
+              ${props?.data?.price}
+            </span>
             {/* <a
               href='#'
               className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center '

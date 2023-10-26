@@ -46,7 +46,7 @@ function App(props) {
   };
   useEffect(() => {
     // getDataWaybill();
-    // getDataProducts();
+    getDataProducts();
     // getDataProduct(1);
     // getSearchDataProducts('samsung');
     // getDataProductsCategories();
@@ -117,7 +117,7 @@ function App(props) {
         </div>
         <div className='text-white text-3xl ml-4  md:ml-0 sm:ml-0'>
           <h2 className='text-lg font-medium text-black mb-2'>Popular</h2>
-          <div className='grid grid-cols-2 sm:grid-cols-4  gap-x-3 gap-y-6 justify-between'>
+          <div className='grid grid-cols-2 sm:grid-cols-4  gap-x-3 gap-y-6 justify-between pr-4 sm:pr-0'>
             {products?.map((product, index) => (
               <CardProduct data={product} key={index} />
             ))}
