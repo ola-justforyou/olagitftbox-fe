@@ -12,11 +12,14 @@ import {
 import SwiperEffect from '../components/SwiperEffect';
 import { Search } from 'lucide-react';
 import CardProduct from '../components/CardProduct';
+import { useDebounce } from 'use-debounce';
+import { Skeleton } from '@mui/material';
 function App(props) {
   const {
     state,
     products,
     product,
+    loading,
     categories,
     getWaybill,
     getAllProducts,
@@ -26,6 +29,7 @@ function App(props) {
     getAllProductsByCategory,
   } = props;
   const [query, setQuery] = useState('');
+  const [value] = useDebounce(query, 1200);
   const getDataWaybill = async () => {
     await getWaybill();
   };
@@ -49,9 +53,12 @@ function App(props) {
     getDataProducts();
     // getDataProduct(1);
     // getSearchDataProducts('samsung');
-    // getDataProductsCategories();
+    getDataProductsCategories();
     // getDataProductsByCategory('smartphones');
   }, []);
+  useEffect(() => {
+    getSearchDataProducts(value);
+  }, [value]);
   const newArray = Array.from({ length: 12 }, () => ({
     title: 'Judul Film Acak',
     releaseYear: Math.floor(Math.random() * 1000) + 1000,
@@ -59,6 +66,7 @@ function App(props) {
 
   console.log(categories, 'categories');
   console.log(products, 'products');
+  console.log(loading, 'loading');
   return (
     <div className='w-screen min-h-screen flex pb-48'>
       <div className='mx-auto container md:px-6 gap-y-6 flex flex-col'>
@@ -87,7 +95,7 @@ function App(props) {
               id='search-navbar'
               class='block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 '
               placeholder='Search...'
-              onChange={(e) => getSearchDataProducts(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
             />
           </div>
         </div>
@@ -97,7 +105,7 @@ function App(props) {
           <div className='flex flex-col h-full h w-full overflow-auto no-scrollbar overflow-y-hidden '>
             <div className='flex min-w-min h-full text-black sm:gap-x-20  gap-x-6 justify-between pr-8'>
               {newArray.map((item, i) => (
-                <div className='flex flex-col rounded-lg h-24 w-16 bg-blue-900'>
+                <div className='flex flex-col rounded-lg h-24 w-24 bg-blue-900'>
                   <div
                     className='basis-11/12 relative'
                     onClick={(e) => console.log(e)}
@@ -107,8 +115,8 @@ function App(props) {
                       className='object-cover rounded-3xl shadow-2xl h-full z-0 overflow-hidden'
                     />
                   </div>
-                  <p className='mt-1 mx-auto basis-1/12 text-white font-bold text-sm flex flex-col'>
-                    test
+                  <p className='mt-1 mx-auto basis-1/12 text-white font-medium text-sm flex flex-col'>
+                    {/* {item} */}
                   </p>
                 </div>
               ))}
@@ -119,7 +127,25 @@ function App(props) {
           <h2 className='text-lg font-medium text-black mb-2'>Popular</h2>
           <div className='grid grid-cols-2 sm:grid-cols-4  gap-x-3 gap-y-6 justify-between pr-4 sm:pr-0'>
             {products?.map((product, index) => (
-              <CardProduct data={product} key={index} />
+              <>
+                {loading ? (
+                  <div>
+                    <Skeleton
+                      style={{
+                        width: '100%',
+                        height: '16rem',
+                        maxWidth: '20rem',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '0.5rem',
+                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                      }}
+                      variant='rounded'
+                    />
+                  </div>
+                ) : (
+                  <CardProduct data={product} key={index} />
+                )}
+              </>
             ))}
           </div>
         </div>
@@ -132,6 +158,7 @@ const mapStateToProps = (state) => ({
   state: state.waybill.data,
   products: state.products.datas.products,
   product: state.products.data,
+  loading: state.products.loading,
   categories: state.products.categories,
 });
 export default connect(mapStateToProps, {
