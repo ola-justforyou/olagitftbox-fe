@@ -1,7 +1,6 @@
 import React from 'react';
 
 const CardProduct = (props) => {
-  console.log(props);
   return (
     <div>
       <div className='w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow '>

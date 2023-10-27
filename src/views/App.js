@@ -30,6 +30,12 @@ function App(props) {
   } = props;
   const [query, setQuery] = useState('');
   const [value] = useDebounce(query, 1200);
+  const [isOpen, setIsOpen] = useState(false);
+  const [short, setShort] = useState(1);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   const getDataWaybill = async () => {
     await getWaybill();
   };
@@ -58,15 +64,49 @@ function App(props) {
   }, []);
   useEffect(() => {
     getSearchDataProducts(value);
+    setShort(1);
   }, [value]);
   const newArray = Array.from({ length: 12 }, () => ({
     title: 'Judul Film Acak',
     releaseYear: Math.floor(Math.random() * 1000) + 1000,
   }));
+  const sortByPriceAscending = (products) =>
+    products?.sort((a, b) => a?.price - b?.price);
 
-  console.log(categories, 'categories');
-  console.log(products, 'products');
-  console.log(loading, 'loading');
+  const sortByPriceDescending = (products) =>
+    products?.sort((a, b) => b?.price - a?.price);
+  const sortBySale = (products) => products?.sort((a, b) => b?.sale - a?.sale);
+  const sortByNewProduct = (products) =>
+    products?.sort((a, b) => b?.create_at - a?.create_at);
+  const shortBy = [
+    {
+      id: '1',
+      name: 'Semua',
+      function: () => getDataProducts(),
+    },
+    {
+      id: '2',
+      name: 'Terbaru',
+      function: (products) => sortByNewProduct(products),
+    },
+    {
+      id: '3',
+      name: 'Harga Tertinggi',
+      function: (products) => sortByPriceDescending(products),
+    },
+    {
+      id: '4',
+      name: 'Harga Terendah',
+      function: (products) => sortByPriceAscending(products),
+    },
+    {
+      id: '5',
+      name: 'Pembelian Terbanyak',
+      function: (products) => sortBySale(products),
+    },
+  ];
+
+  // console.log(products?.sort((a, b) => a?.price - b?.price));
   return (
     <div className='w-screen min-h-screen flex pb-48'>
       <div className='mx-auto container md:px-6 gap-y-6 flex flex-col'>
@@ -124,7 +164,65 @@ function App(props) {
           </div>
         </div>
         <div className='text-white text-3xl ml-4  md:ml-0 sm:ml-0'>
-          <h2 className='text-lg font-medium text-black mb-2'>Popular</h2>
+          <div className='w-full flex justify-between'>
+            <h2 className='text-lg font-medium text-black mb-2'>
+              {shortBy.find((item) => item.id == short)?.name}
+            </h2>
+            <div className='flex justify-between items-center relative mr-3 mb-2 '>
+              <button
+                id='dropdownDefaultButton'
+                onClick={toggleDropdown}
+                className={`text-sm font-medium text-gray-500  text-center inline-flex items-center `}
+                type='button'
+              >
+                Short by
+                <svg
+                  className='w-2.5 m-2.5 ml-1.5'
+                  aria-hidden='true'
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 10 6'
+                >
+                  <path
+                    stroke='currentColor'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='m1 1 4 4 4-4'
+                  />
+                </svg>
+              </button>
+              {isOpen && (
+                <div
+                  id='lastDaysdropdown'
+                  className=' absolute top-7 right-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 '
+                >
+                  <ul
+                    className='py-2 text-sm text-gray-700 border border-gray-100 rounded-md'
+                    aria-labelledby='dropdownDefaultButton'
+                  >
+                    {shortBy.map((by, index) => (
+                      <li
+                        key={index}
+                        onClick={() => {
+                          setShort(by.id);
+                          setIsOpen(!isOpen);
+                          by.function(products);
+                        }}
+                      >
+                        <a
+                          href='#'
+                          className='block px-4 py-2 hover:bg-gray-100 '
+                        >
+                          {by.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
           <div className='grid grid-cols-2 sm:grid-cols-4  gap-x-3 gap-y-6 justify-between pr-4 sm:pr-0'>
             {products?.map((product, index) => (
               <>
