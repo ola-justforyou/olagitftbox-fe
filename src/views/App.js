@@ -14,6 +14,7 @@ import { Search } from 'lucide-react';
 import CardProduct from '../components/CardProduct';
 import { useDebounce } from 'use-debounce';
 import { Skeleton } from '@mui/material';
+import SwiperCards from '../components/SwiperCards/SwiperCards';
 function App(props) {
   const {
     state,
@@ -31,6 +32,7 @@ function App(props) {
   const [query, setQuery] = useState('');
   const [value] = useDebounce(query, 1200);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [short, setShort] = useState(1);
 
   const toggleDropdown = () => {
@@ -106,7 +108,6 @@ function App(props) {
     },
   ];
 
-  // console.log(products?.sort((a, b) => a?.price - b?.price));
   return (
     <div className='w-screen min-h-screen flex pb-48'>
       <div className='mx-auto container md:px-6 gap-y-6 flex flex-col'>
@@ -139,37 +140,43 @@ function App(props) {
             />
           </div>
         </div>
-        <SwiperEffect />
-        <div className='text-white text-3xl ml-4  md:ml-0 sm:ml-0'>
-          <h2 className='text-lg font-medium text-black mb-2'>Category</h2>
-          <div className='flex flex-col h-full h w-full overflow-auto no-scrollbar overflow-y-hidden '>
-            <div className='flex min-w-min h-full text-black sm:gap-x-20  gap-x-6 justify-between pr-8'>
-              {newArray.map((item, i) => (
-                <div className='flex flex-col rounded-lg h-24 w-24 bg-blue-900'>
-                  <div
-                    className='basis-11/12 relative'
-                    onClick={(e) => console.log(e)}
-                  >
-                    <img
-                      src={''}
-                      className='object-cover rounded-3xl shadow-2xl h-full z-0 overflow-hidden'
-                    />
-                  </div>
-                  <p className='mt-1 mx-auto basis-1/12 text-white font-medium text-sm flex flex-col'>
-                    {/* {item} */}
-                  </p>
+        {!value ? (
+          <>
+            <SwiperEffect />
+            <div className='text-white text-3xl ml-4  md:ml-0 sm:ml-0'>
+              <h2 className='text-lg font-medium text-black mb-2'>Category</h2>
+              <div className='flex flex-col h-full h w-full overflow-auto no-scrollbar overflow-y-hidden '>
+                <div className='flex min-w-min h-full text-black sm:gap-x-20  gap-x-6 justify-between pr-8'>
+                  {newArray.map((item, i) => (
+                    <div className='flex flex-col rounded-lg h-24 w-24 bg-blue-900'>
+                      <div
+                        className='basis-11/12 relative'
+                        onClick={(e) => console.log(e)}
+                      >
+                        <img
+                          src={''}
+                          className='object-cover rounded-3xl shadow-2xl h-full z-0 overflow-hidden'
+                        />
+                      </div>
+                      <p className='mt-1 mx-auto basis-1/12 text-white font-medium text-sm flex flex-col'>
+                        {/* {item} */}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        ) : (
+          ''
+        )}
         <div className='text-white text-3xl ml-4  md:ml-0 sm:ml-0'>
           <div className='w-full flex justify-between'>
             <h2
-              className={`text-lg font-medium mb-2 ${
+              className={`text-lg font-medium  ${
                 short != 1
-                  ? 'px-2 bg-blue-100  text-blue-900 rounded-lg'
-                  : 'text-black'
+                  ? 'px-2 bg-blue-100  text-blue-900 rounded-lg mb-4 mt-1'
+                  : 'text-black mb-2'
               }`}
             >
               {shortBy.find((item) => item.id == short)?.name}
@@ -252,9 +259,18 @@ function App(props) {
               </>
             ))}
           </div>
+          {products?.length == 0 ? (
+            <div className=' flex'>
+              <h3 class='text-xl font-semibold text-gray-900 mx-auto mt-32'>
+                Produk Tidak Tersedia...
+              </h3>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
 
-        <div class='fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-sm shadow-2xl bottom-0 left-1/2 '>
+        <div class='fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-sm shadow- bottom-0 left-1/2 sm:hidden'>
           <div class='grid h-full max-w-lg grid-cols-5 mx-auto'>
             <button
               data-tooltip-target='tooltip-home'
@@ -305,7 +321,10 @@ function App(props) {
               Wallet
               <div class='tooltip-arrow' data-popper-arrow></div>
             </div>
-            <div class='flex items-center justify-center'>
+            <div
+              class='flex items-center justify-center'
+              onClick={() => setIsOpenModal(!isOpenModal)}
+            >
               <button
                 data-tooltip-target='tooltip-new'
                 type='button'
@@ -393,6 +412,17 @@ function App(props) {
             </div>
           </div>
         </div>
+        {isOpenModal ? (
+          <div className='relative '>
+            <div
+              className='fixed z-50 inset-0  bg-black opacity-70  flex'
+              onClick={() => setIsOpenModal(!isOpenModal)}
+            ></div>
+            <SwiperCards />
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );
