@@ -15,6 +15,7 @@ import CardProduct from '../components/CardProduct';
 import { useDebounce } from 'use-debounce';
 import { Skeleton } from '@mui/material';
 import SwiperCards from '../components/SwiperCards/SwiperCards';
+import ModalCard from '../components/ModalCard';
 function App(props) {
   const {
     state,
@@ -133,7 +134,7 @@ function App(props) {
               <span class='sr-only'>Search icon</span>
             </div>
             <div
-              class='absolute inset-y-0 right-0 flex items-center pr-3 '
+              class='absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer'
               onClick={() => {
                 setQuery('');
               }}
@@ -464,8 +465,10 @@ function App(props) {
             <SwiperCards />
           </div>
         ) : (
+          // <ModalCard />
           ''
         )}
+        <ModalCard />
       </div>
     </div>
   );
