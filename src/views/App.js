@@ -10,7 +10,7 @@ import {
   getAllProductsByCategory,
 } from '../actions/productAction';
 import SwiperEffect from '../components/SwiperEffect';
-import { Search } from 'lucide-react';
+import { Image, Search, X } from 'lucide-react';
 import CardProduct from '../components/CardProduct';
 import { useDebounce } from 'use-debounce';
 import { Skeleton } from '@mui/material';
@@ -30,7 +30,7 @@ function App(props) {
     getAllProductsByCategory,
   } = props;
   const [query, setQuery] = useState('');
-  const [value] = useDebounce(query, 1200);
+  const [value] = useDebounce(query, 1000);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [short, setShort] = useState(1);
@@ -107,9 +107,10 @@ function App(props) {
       function: (products) => sortBySale(products),
     },
   ];
+  console.log(categories, 'categories');
 
   return (
-    <div className='w-screen min-h-screen flex pb-48'>
+    <div className='min-h-screen flex pb-48'>
       <div className='mx-auto container md:px-6 gap-y-6 flex flex-col'>
         <div className='mt-12 px-3 md:px-0 sm:px-0'>
           <div class='relative '>
@@ -131,12 +132,31 @@ function App(props) {
               </svg>
               <span class='sr-only'>Search icon</span>
             </div>
+            <div
+              class='absolute inset-y-0 right-0 flex items-center pr-3 '
+              onClick={() => {
+                setQuery('');
+              }}
+            >
+              {query ? (
+                <X
+                  style={{
+                    height: '17px',
+                    width: '17px',
+                    color: 'gray',
+                  }}
+                />
+              ) : (
+                ''
+              )}
+            </div>
             <input
               type='text'
               id='search-navbar'
               class='block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 '
               placeholder='Search...'
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value.slice(0, 35))}
+              value={query}
             />
           </div>
         </div>
@@ -146,22 +166,44 @@ function App(props) {
             <div className='text-white text-3xl ml-4  md:ml-0 sm:ml-0'>
               <h2 className='text-lg font-medium text-black mb-2'>Category</h2>
               <div className='flex flex-col h-full h w-full overflow-auto no-scrollbar overflow-y-hidden '>
-                <div className='flex min-w-min h-full text-black sm:gap-x-20  gap-x-6 justify-between pr-8'>
-                  {newArray.map((item, i) => (
-                    <div className='flex flex-col rounded-lg h-24 w-24 bg-blue-900'>
-                      <div
-                        className='basis-11/12 relative'
-                        onClick={(e) => console.log(e)}
-                      >
-                        <img
-                          src={''}
-                          className='object-cover rounded-3xl shadow-2xl h-full z-0 overflow-hidden'
-                        />
-                      </div>
-                      <p className='mt-1 mx-auto basis-1/12 text-white font-medium text-sm flex flex-col'>
-                        {/* {item} */}
-                      </p>
-                    </div>
+                <div className='flex min-w-min h-full text-black sm:gap-x-20  gap-x-4 justify-between pr-8'>
+                  {categories?.map((item, i) => (
+                    <>
+                      {loading ? (
+                        <div>
+                          <Skeleton
+                            style={{
+                              width: '6rem',
+                              height: '5rem',
+                              maxWidth: '20rem',
+                              border: '1px solid #e2e8f0',
+                              borderRadius: '0.5rem',
+                              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                            }}
+                            animation='wave'
+                            variant='rounded'
+                          />
+                        </div>
+                      ) : (
+                        <div className='flex flex-col rounded-lg h-16 w-24 '>
+                          <div
+                            className='basis-11/12 relative w-full h-full flex '
+                            onClick={(e) => console.log(e)}
+                          >
+                            <Image
+                              style={{
+                                margin: 'auto',
+                                width: '1.8rem',
+                                height: '1.8rem',
+                              }}
+                            />
+                          </div>
+                          <p className='mt-1 mx-auto basis-1/12 text-gray-500 font-medium text-xs flex flex-col'>
+                            {item}
+                          </p>
+                        </div>
+                      )}
+                    </>
                   ))}
                 </div>
               </div>
@@ -236,7 +278,7 @@ function App(props) {
               )}
             </div>
           </div>
-          <div className='grid grid-cols-2 sm:grid-cols-4  gap-x-3 gap-y-6 justify-between pr-4 sm:pr-0'>
+          <div className='grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3  gap-x-3 gap-y-6 justify-between pr-4 sm:pr-0'>
             {products?.map((product, index) => (
               <>
                 {loading ? (
@@ -250,6 +292,7 @@ function App(props) {
                         borderRadius: '0.5rem',
                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                       }}
+                      animation='wave'
                       variant='rounded'
                     />
                   </div>

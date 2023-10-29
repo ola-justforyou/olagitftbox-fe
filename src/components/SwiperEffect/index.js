@@ -6,12 +6,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import 'swiper/css/pagination';
-
 import '../SwiperEffect/style.css';
-
+import Soto from '../../assets/images/soto.jpeg';
+import Seblak from '../../assets/images/seblak.jpeg';
 import { EffectCreative, Pagination } from 'swiper/modules';
 
 const SwiperEffect = (props) => {
+  const arr = [
+    { id: 1, image: <img src={Soto}></img> },
+    { id: 2, image: <img src={Seblak}></img> },
+    { id: 3, image: <img src={Soto}></img> },
+  ];
   return (
     <>
       <Swiper
@@ -30,9 +35,9 @@ const SwiperEffect = (props) => {
         modules={[EffectCreative, Pagination]}
         className='mySwiper3'
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
+        {arr.map((banner) => (
+          <SwiperSlide>{banner.image}</SwiperSlide>
+        ))}
       </Swiper>
     </>
   );

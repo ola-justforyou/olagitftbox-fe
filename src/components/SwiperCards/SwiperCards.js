@@ -10,7 +10,6 @@ import '../SwiperCards/style.css';
 
 // import required modules
 import { EffectCards } from 'swiper/modules';
-
 const SwiperCards = (props) => {
   return (
     <>

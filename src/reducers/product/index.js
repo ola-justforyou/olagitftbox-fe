@@ -8,7 +8,7 @@ import {
 var initialState = {
   data: {},
   datas: {},
-  categories: {},
+  categories: [],
   loading: false,
   error: null,
 };
