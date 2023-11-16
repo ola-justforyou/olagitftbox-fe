@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 import React from 'react';
 
 const CardProduct = (props) => {
   return (
-    <div>
+    <Link to={`/product/${props?.data?.id}`}>
       <div className='w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow '>
         <a className='h-32 object-contain'>
           <img
@@ -80,7 +81,7 @@ const CardProduct = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

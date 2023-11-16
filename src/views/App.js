@@ -281,7 +281,7 @@ function App(props) {
           </div>
           <div className='grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3  gap-x-3 gap-y-6 justify-between pr-4 sm:pr-0'>
             {products?.map((product, index) => (
-              <>
+              <div className='hover:cursor-pointer'>
                 {loading ? (
                   <div>
                     <Skeleton
@@ -298,9 +298,15 @@ function App(props) {
                     />
                   </div>
                 ) : (
-                  <CardProduct data={product} key={index} />
+                  <CardProduct
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
+                    }
+                    data={product}
+                    key={index}
+                  />
                 )}
-              </>
+              </div>
             ))}
           </div>
           {products?.length == 0 ? (
@@ -314,7 +320,7 @@ function App(props) {
           )}
         </div>
 
-        <div class='fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-sm shadow- bottom-0 left-1/2 sm:hidden'>
+        <div class='fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-sm  bottom-0 left-1/2 '>
           <div class='grid h-full max-w-lg grid-cols-5 mx-auto'>
             <button
               data-tooltip-target='tooltip-home'
