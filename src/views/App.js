@@ -59,15 +59,20 @@ function App(props) {
   };
   useEffect(() => {
     // getDataWaybill();
-    getDataProducts();
     // getDataProduct(1);
     // getSearchDataProducts('samsung');
-    getDataProductsCategories();
+    if (!products) {
+      console.log('render');
+      getDataProducts();
+      getDataProductsCategories();
+    }
     // getDataProductsByCategory('smartphones');
   }, []);
   useEffect(() => {
-    getSearchDataProducts(value);
-    setShort(1);
+    if (value) {
+      getSearchDataProducts(value);
+      setShort(1);
+    }
   }, [value]);
   const newArray = Array.from({ length: 12 }, () => ({
     title: 'Judul Film Acak',
@@ -108,7 +113,7 @@ function App(props) {
       function: (products) => sortBySale(products),
     },
   ];
-  console.log(categories, 'categories');
+  // console.log(categories, 'categories');
 
   return (
     <div className='min-h-screen flex pb-48'>
@@ -299,9 +304,10 @@ function App(props) {
                   </div>
                 ) : (
                   <CardProduct
-                    onClick={() =>
-                      window.scrollTo({ top: 0, behavior: 'smooth' })
-                    }
+                    onClick={(e) => {
+                      console.log('-----');
+                      getDataProduct(product.id);
+                    }}
                     data={product}
                     key={index}
                   />

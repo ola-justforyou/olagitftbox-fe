@@ -3,20 +3,64 @@ import { connect } from 'react-redux';
 import { getProductById } from '../../actions/productAction';
 import { useParams } from 'react-router-dom';
 
+const PreviewImageProduct = (props) => {
+  return (
+    <>
+      <div>test</div>
+    </>
+  );
+};
 const DetailProduct = (props) => {
   const { product, getProductById } = props;
   const { id } = useParams();
+  const sizeProduct = [
+    {
+      value: 1,
+      label: 'XS',
+    },
+    {
+      value: 2,
+      label: 'S',
+    },
+    {
+      value: 3,
+      label: 'M',
+    },
+    {
+      value: 4,
+      label: 'L',
+    },
+    {
+      value: 5,
+      label: 'XL',
+    },
+    {
+      value: 6,
+      label: 'XLL',
+    },
+  ];
+  const colorProduct = [
+    {
+      value: 1,
+      label: 'Merah',
+    },
+    {
+      value: 2,
+      label: 'Biru',
+    },
+  ];
   useEffect(() => {
+    window.scrollTo({ top: 0 });
     getProductById(id);
   }, []);
 
-  console.log(product);
+  // console.log(product);
   return (
     <div>
       <section class='py-10 font-poppins '>
         <div class='max-w-6xl px-4 mx-auto'>
           <div class='flex flex-wrap mb-24 -mx-4'>
-            <div class='w-full px-4 mb-8 md:w-1/2 md:mb-0'>
+            <div class='w-full px-4 mb-0 md:w-1/2 md:mb-0'>
               <div class='sticky top-0 overflow-hidden '>
                 <div class='relative mb-6 lg:mb-10 lg:h-96'>
                   <a
@@ -81,14 +125,54 @@ const DetailProduct = (props) => {
             </div>
             <div class='w-full px-4 md:w-1/2'>
               <div class='lg:pl-20'>
-                <div class='mb-6 '>
-                  <span class='px-2.5 py-0.5 text-xs text-blue-600 bg-blue-100  rounded-xl '>
+                <div class='mb-0 '>
+                  {/* <span class='px-2.5 py-0.5 text-xs text-blue-600 bg-blue-100  rounded-xl '>
                     New Arrival
-                  </span>
-                  <h2 class='max-w-xl mt-6 mb-6 text-xl font-semibold leading-loose tracking-wide text-gray-700 md:text-2xl '>
+                  </span> */}
+                  <h2 class='max-w-xl mt-0 mb-02 text-2xl font-semibold leading-loose tracking-wide text-gray-700  '>
                     {product?.title}
                   </h2>
-                  <div class='flex flex-wrap items-center mb-6'>
+                  <p class='inline-block text-2xl mb-4 font-semibold text-gray-500   '>
+                    <span>$ {product?.price}</span>
+                    <span class='ml-3 text-base font-normal text-gray-500 line-through  '>
+                      $ .10,000.00
+                    </span>
+                  </p>
+                  <p className='mb-2 text-md text-gray-700'>Pilih Ukuran :</p>
+                  <div class='w-full flex flex-wrap gap-x-3 mb-4'>
+                    {sizeProduct.map((size, index) => (
+                      <div
+                        key={index}
+                        className={`cursor-pointer px-2 py-1 border w-11 rounded-md text-center  ${
+                          index == 2
+                            ? 'border-gray-700 text-gray-800'
+                            : 'border-gray-300 text-gray-400'
+                        }`}
+                      >
+                        {size.label}
+                      </div>
+                    ))}
+                  </div>
+                  <p className='mb-2 text-md text-gray-700'>Pilih Warna :</p>
+                  <div class='w-full flex flex-wrap gap-x-3 mb-6'>
+                    {colorProduct.map((color, index) => (
+                      <div
+                        key={index}
+                        className={`cursor-pointer px-2 py-1 border l rounded-md text-center  ${
+                          index == 1
+                            ? 'border-gray-700 text-gray-800'
+                            : 'border-gray-300 text-gray-400'
+                        }`}
+                      >
+                        {color.label}
+                      </div>
+                    ))}
+                  </div>
+                  <p className='mb-2 text-md text-gray-700'>Deskripsi :</p>
+                  <div class='w-full flex flex-wrap text-gray-500 text-sm mb-6'>
+                    {product?.description}
+                  </div>
+                  {/* <div class='flex flex-wrap items-center mb-6'>
                     <ul class='flex mb-4 mr-2 lg:mb-0'>
                       <li>
                         <a href='#'>
@@ -153,15 +237,9 @@ const DetailProduct = (props) => {
                     >
                       View the acer store
                     </a>
-                  </div>
-                  <p class='inline-block text-2xl font-semibold text-gray-700   '>
-                    <span>$ {product?.price}</span>
-                    <span class='ml-3 text-base font-normal text-gray-500 line-through  '>
-                      $ .10,000.00
-                    </span>
-                  </p>
+                  </div> */}
                 </div>
-                <div class='mb-6'>
+                {/* <div class='mb-6'>
                   <h2 class='mb-2 text-lg font-bold text-gray-700  '>
                     System Specs :
                   </h2>
@@ -276,7 +354,7 @@ const DetailProduct = (props) => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div class='py-6 mb-6 border-t border-b border-gray-200 '>
                   <span class='text-base text-gray-600  '>In Stock</span>
                   <p class='mt-2 text-sm text-blue-500 '>

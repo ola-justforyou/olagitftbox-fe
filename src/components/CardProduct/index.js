@@ -3,7 +3,10 @@ import React from 'react';
 
 const CardProduct = (props) => {
   return (
-    <Link to={`/product/${props?.data?.id}`}>
+    <Link
+      to={`/product/${props?.data?.id}`}
+      onClick={() => console.log('------')}
+    >
       <div className='w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow '>
         <a className='h-32 object-contain'>
           <img

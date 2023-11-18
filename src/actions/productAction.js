@@ -34,6 +34,10 @@ export const getAllProducts = () => {
 };
 export const getProductById = (id) => {
   return (dispatch) => {
+    dispatch({
+      type: SET_PRODUCT,
+      data: '',
+    });
     dispatch({ type: SET_PRODUCT_LOADING, status: true });
     axios
       .get('https://dummyjson.com/products/' + id)
