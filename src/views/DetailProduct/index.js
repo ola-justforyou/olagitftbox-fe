@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getProductById } from '../../actions/productAction';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const PreviewImageProduct = (props) => {
   return (
@@ -11,6 +11,11 @@ const PreviewImageProduct = (props) => {
   );
 };
 const DetailProduct = (props) => {
+  const history = useNavigate();
+
+  const goBack = () => {
+    history(-1);
+  };
   const { product, getProductById } = props;
   const { id } = useParams();
   const sizeProduct = [
@@ -60,6 +65,12 @@ const DetailProduct = (props) => {
       <section class='py-10 font-poppins '>
         <div class='max-w-6xl px-4 mx-auto'>
           <div class='flex flex-wrap mb-24 -mx-4'>
+            <p
+              class='flex flex-wrap mb-1 cursor-pointer  ml-3'
+              onClick={goBack}
+            >
+              Kembali
+            </p>
             <div class='w-full px-4 mb-0 md:w-1/2 md:mb-0'>
               <div class='sticky top-0 overflow-hidden '>
                 <div class='relative mb-6 lg:mb-10 lg:h-96'>

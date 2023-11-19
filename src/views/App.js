@@ -16,6 +16,7 @@ import { useDebounce } from 'use-debounce';
 import { Skeleton } from '@mui/material';
 import SwiperCards from '../components/SwiperCards/SwiperCards';
 import ModalCard from '../components/ModalCard';
+import { useSearchParams } from 'react-router-dom';
 function App(props) {
   const {
     state,
@@ -30,7 +31,8 @@ function App(props) {
     getAllProductsCategories,
     getAllProductsByCategory,
   } = props;
-  const [query, setQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('search');
   const [value] = useDebounce(query, 1000);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -38,9 +40,6 @@ function App(props) {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-  };
-  const getDataWaybill = async () => {
-    await getWaybill();
   };
   const getDataProducts = async () => {
     await getAllProducts();
@@ -57,23 +56,20 @@ function App(props) {
   const getDataProductsByCategory = async (category) => {
     await getAllProductsByCategory(category);
   };
+
   useEffect(() => {
-    // getDataWaybill();
-    // getDataProduct(1);
-    // getSearchDataProducts('samsung');
-    if (!products) {
-      console.log('render');
-      getDataProducts();
-      getDataProductsCategories();
-    }
+    getDataProductsCategories();
     // getDataProductsByCategory('smartphones');
   }, []);
   useEffect(() => {
     if (value) {
       getSearchDataProducts(value);
-      setShort(1);
+    } else {
+      getAllProducts();
     }
+    setShort(1);
   }, [value]);
+
   const newArray = Array.from({ length: 12 }, () => ({
     title: 'Judul Film Acak',
     releaseYear: Math.floor(Math.random() * 1000) + 1000,
@@ -113,7 +109,8 @@ function App(props) {
       function: (products) => sortBySale(products),
     },
   ];
-  // console.log(categories, 'categories');
+  // console.log(searchParams, 'searchParams');
+  console.log('Search parameter from URL:', query);
 
   return (
     <div className='min-h-screen flex pb-48'>
@@ -141,7 +138,9 @@ function App(props) {
             <div
               class='absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer'
               onClick={() => {
-                setQuery('');
+                // setQuery('');
+                setSearchParams({ search: '' });
+                // getDataProducts();
               }}
             >
               {query ? (
@@ -161,7 +160,9 @@ function App(props) {
               id='search-navbar'
               class='block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 '
               placeholder='Search...'
-              onChange={(e) => setQuery(e.target.value.slice(0, 35))}
+              onChange={(e) => {
+                setSearchParams({ search: e.target.value.slice(0, 35) });
+              }}
               value={query}
             />
           </div>
